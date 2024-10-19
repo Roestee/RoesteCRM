@@ -1,0 +1,22 @@
+﻿using RoesteCrmServer.Application.Features.Auth.Login;
+using RoesteCrmServer.WebApi.Abstractions;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace RoesteCrmServer.WebApi.Controllers;
+
+[AllowAnonymous]
+public class AuthController : ApiController
+{
+    public AuthController(IMediator mediator) : base(mediator)
+    {
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginCommand request, CancellationToken cancellationToken)
+    {
+        var response = await _mediator.Send(request, cancellationToken);
+        return StatusCode(response.StatusCode, response);
+    }
+}
